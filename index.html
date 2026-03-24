@@ -49,10 +49,13 @@
             };
 
             // Fire the data to Google Sheets silently
-            fetch(WEBHOOK_URL, {
-                method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify(payload)
+            // Construct the URL with data attached
+            const requestUrl = WEBHOOK_URL + "?category=" + encodeURIComponent(currentTask) + "&duration=" + durationMinutes;
+
+            // Fire the GET request
+            fetch(requestUrl, { 
+                method: "GET", 
+                mode: "no-cors" 
             }).then(() => {
                 document.getElementById('status').innerText = "Logged: " + currentTask + " (" + durationMinutes + "m)";
                 currentTask = null;
