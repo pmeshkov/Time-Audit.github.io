@@ -17,6 +17,8 @@
     
     <button onclick="startTask('Textbook Reading')">Textbook Reading</button>
     <button onclick="startTask('Online Reading')">Online Reading</button>
+    <button onclick="startTask('Homework/problem-solving')">Homework/problem-solving</button>
+    <button onclick="startTask('Computational Physics')">Computation Physics</button>
     <button onclick="startTask('Fabrication')">Fabrication</button>
     <button onclick="startTask('Characterization/Optics')">Characterization/Optics</button>
     
@@ -47,6 +49,7 @@
 
             // Construct the payload
             const payload = {
+                startTime: startTime,
                 category: currentTask,
                 duration: durationMinutes
             };
