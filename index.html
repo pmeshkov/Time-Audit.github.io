@@ -40,34 +40,30 @@
             document.getElementById('status').innerText = "Tracking: " + taskName;
         }
 
-        function stopTask() {
-            if (!currentTask || !startTime) return;
+function stopTask() {
+        if (!currentTask || !startTime) return;
 
-            // Calculate duration in minutes
-            const durationMs = Date.now() - startTime;
-            const durationMinutes = (durationMs / 1000 / 60).toFixed(2);
+        // Calculate duration in minutes
+        const durationMs = Date.now() - startTime;
+        const durationMinutes = (durationMs / 1000 / 60).toFixed(2);
 
-            // Construct the payload
-            const payload = {
-                startTime: startTime,
-                category: currentTask,
-                duration: durationMinutes
-            };
+        // Format the start time to a readable string based on the device's local timezone
+        const startTimeString = new Date(startTime).toLocaleString('en-US');
 
-            // Fire the data to Google Sheets silently
-            // Construct the URL with data attached
-            const requestUrl = WEBHOOK_URL + "?category=" + encodeURIComponent(currentTask) + "&duration=" + durationMinutes;
+        // Construct the URL with data attached, adding the startTime parameter
+        const requestUrl = WEBHOOK_URL + 
+            "?category=" + encodeURIComponent(currentTask) + 
+            "&duration=" + durationMinutes +
+            "&startTime=" + encodeURIComponent(startTimeString);
 
-            // Fire the GET request
-            fetch(requestUrl, { 
-                method: "GET", 
-                mode: "no-cors" 
-            }).then(() => {
-                document.getElementById('status').innerText = "Logged: " + currentTask + " (" + durationMinutes + "m)";
-                currentTask = null;
-                startTime = null;
-            }).catch(err => console.error("Sync failed", err));
-        }
-    </script>
-</body>
-</html>
+        // Fire the GET request
+        fetch(requestUrl, { 
+            method: "GET", 
+            mode: "no-cors" 
+        }).then(() => {
+            document.getElementById('status').innerText = "Logged: " + currentTask + " (" + durationMinutes + "m)";
+            currentTask = null;
+            startTime = null;
+        }).catch(err => console.error("Sync failed", err));
+    }
+</script>
